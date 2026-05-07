@@ -23,6 +23,6 @@ export const generalFetcher = async <T>(baseUrl: string, params = {}, signal?: A
     if (!response.ok) {
         throw new Error(`Error: ${response.status}`)
     }
-    const rawResponse = await response.json() as Promise<T>
-    return rawResponse
+    const results = await response.json() as Promise<T>
+    return results
 }  

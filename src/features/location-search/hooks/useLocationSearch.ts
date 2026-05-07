@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import type { GeocodingApiLocation } from "../types"
 import { useDebouncedValue } from "../../../shared/hooks/useDebouncedValue"
 import { searchLocations } from "../api"
@@ -27,9 +27,9 @@ export const useLocationSearch = (query: string) => {
       return () => controller.abort()
     }, [debouncedValue])   
 
-    return {
+    return useMemo(() => ({
       locations,
       loading,
       error,
-    }
-}
+    }), [locations, loading, error])
+  }
