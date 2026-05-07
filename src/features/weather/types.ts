@@ -1,13 +1,3 @@
-export type TemperatureUnit = 'celsius' | 'fahrenheit';
-
-export interface ForecastRequestParams {
-  latitude: number;
-  longitude: number;
-  forecastDays?: number;
-  temperatureUnit?: TemperatureUnit;
-  timezone?: string;
-}
-
 export interface ForecastApiResponse {
   latitude: number;
   longitude: number;
@@ -60,11 +50,46 @@ export interface DailyWeatherApi {
 export interface HourlyUnits {
   time: string;
   temperature_2m: string;
+  relative_humidity_2m?: string;
+  wind_speed_10m?: string;
+  weather_code?: string;
 }
 
 export interface HourlyWeatherApi {
   time: string[];
   temperature_2m: number[];
-  relative_humidity_2m: number[];
-  wind_speed_10m: number[];
+  relative_humidity_2m?: number[];
+  wind_speed_10m?: number[];
+  weather_code?: number[];
 }
+
+export type CurrentWeather = {
+  time: string;
+  temperature: number;
+  windSpeed: number;
+  weatherCode: number;
+};
+
+export type ForecastDay = {
+  date: string;
+  minTemp: number;
+  maxTemp: number;
+  weatherCode: number;
+};
+
+export type HourlyForecastItem = {
+  time: string;
+  date: string;
+  hourLabel: string;
+  temperature: number;
+  humidity?: number;
+  windSpeed?: number;
+  weatherCode?: number;
+};
+
+export type ForecastViewModel = {
+  timezone: string;
+  current: CurrentWeather;
+  days: ForecastDay[];
+  hourly: HourlyForecastItem[];
+};
