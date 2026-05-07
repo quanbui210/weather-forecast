@@ -3,7 +3,7 @@ import { getWeatherForecast } from '../api';
 import { mapForecast } from '../model/mappers';
 import type { ForecastViewModel } from '../types';
 
-export const useForeCast = (location: {
+export const useForecast = (location: {
     latitude: number
     longitude: number
 } | null): {

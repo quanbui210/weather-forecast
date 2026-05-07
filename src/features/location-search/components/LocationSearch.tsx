@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { useLocationSearch } from '../hooks/useLocationSearch'
 import type { GeocodingApiLocation } from '../types'
@@ -24,8 +24,6 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
   const hasQuery = query.trim().length > 0
   const isMinLength = query.trim().length >= 2
   const shouldShowResults = isFocused && hasQuery
-
-  const results = useMemo(() => locations ?? [], [locations])
 
   function handleSelect(location: GeocodingApiLocation) {
     onSelectLocation(location)
@@ -73,7 +71,7 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
 
         {shouldShowResults ? (
           <SearchResults
-            results={results}
+            results={locations}
             isLoading={loading}
             error={error ?? null}
             hasQuery={hasQuery}

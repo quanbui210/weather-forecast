@@ -1,18 +1,27 @@
 import styles from './App.module.scss'
 import { LocationSearch, type GeocodingApiLocation } from '../features/location-search'
+import { WeatherView } from '../features/weather'
 import { useState } from 'react'
+
 function App() {
   const [selectedLocation, setSelectedLocation] = useState<GeocodingApiLocation | null>(null)
+
   return (
     <div className={styles.page}>
       <main className={styles.container}>
-        <h1>Weather</h1>
-        <LocationSearch
-          selectedLocation={selectedLocation}
-          onSelectLocation={setSelectedLocation}
-          onClearSelection={() => setSelectedLocation(null)}
-        />
-       
+        <header className={styles.header}>
+          <h1 className={styles.title}>Weather Forecast</h1>
+        </header>
+
+        <section className={styles.searchPanel}>
+          <LocationSearch
+            selectedLocation={selectedLocation}
+            onSelectLocation={setSelectedLocation}
+            onClearSelection={() => setSelectedLocation(null)}
+          />
+        </section>
+
+        <WeatherView location={selectedLocation} />
       </main>
     </div>
   )

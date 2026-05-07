@@ -3,10 +3,10 @@ import type { ForecastApiResponse } from "./types"
 
 const WEATHER_FORECAST_URL = 'https://api.open-meteo.com/v1/forecast'
 const defaultParams = {
-    current: "temperature_2m,wind_speed_10m",
+    current: "temperature_2m,relative_humidity_2m,wind_speed_10m",
     daily: "temperature_2m_max,temperature_2m_min",
     hourly: 'temperature_2m,relative_humidity_2m,wind_speed_10m',
-    forecast_days: 1,
+    forecast_days: 7,
     timezone: "auto"
 }
 
