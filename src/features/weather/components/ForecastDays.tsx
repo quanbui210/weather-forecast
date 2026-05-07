@@ -1,6 +1,7 @@
 import type { ForecastDay } from '../types'
 import { formatMonthDay, formatWeekday } from '../../../shared/lib/date'
 import { formatTemperature } from '../../../shared/lib/format'
+import { getWeatherVisual } from '../model/weatherCode'
 import styles from './WeatherView.module.scss'
 
 type ForecastDaysProps = {
@@ -18,6 +19,7 @@ export function ForecastDays({ days, selectedDate, onSelectDate }: ForecastDaysP
       <div className={styles.forecastGrid}>
         {days.map((day) => {
           const isActive = selectedDate === day.date
+          const visual = getWeatherVisual(day.weatherCode)
 
           return (
             <button
@@ -26,9 +28,17 @@ export function ForecastDays({ days, selectedDate, onSelectDate }: ForecastDaysP
               className={`${styles.dayButton} ${isActive ? styles.dayButtonActive : ''}`}
               onClick={() => onSelectDate(day.date)}
             >
-              <span className={styles.dayName}>{formatWeekday(day.date)}</span>
-              <span className={styles.dayDate}>{formatMonthDay(day.date)}</span>
-               <span className={styles.tempRange}>
+              <div className={styles.dayHeader}>
+                <div className={styles.dayLabel}>
+                  <span className={styles.dayName}>{formatWeekday(day.date)}</span>
+                  <span className={styles.dayDate}>{formatMonthDay(day.date)}</span>
+                </div>
+                <img className={styles.dayIcon} src={visual.image} alt={visual.description} />
+              </div>
+
+              <span className={styles.dayCondition}>{visual.description}</span>
+
+              <span className={styles.tempRange}>
                 <span className={styles.tempMax}>{formatTemperature(day.maxTemp)}</span>
                 <span className={styles.tempMin}>{formatTemperature(day.minTemp)}</span>
               </span>

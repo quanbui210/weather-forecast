@@ -9,8 +9,10 @@ export interface ForecastApiResponse {
 
 export interface CurrentWeatherApi {
   time: string;
+  is_day: number;
   temperature_2m: number;
   relative_humidity_2m: number;
+  weather_code: number;
   wind_speed_10m: number;
 }
 
@@ -18,6 +20,7 @@ export interface DailyWeatherApi {
   time: string[];
   temperature_2m_max: number[];
   temperature_2m_min: number[];
+  weather_code: number[];
 }
 
 export interface HourlyWeatherApi {
@@ -29,8 +32,10 @@ export interface HourlyWeatherApi {
 
 export type CurrentWeather = {
   time: string;
+  isDay: boolean;
   temperature: number;
   humidity: number;
+  weatherCode: number;
   windSpeed: number;
 };
 
@@ -38,6 +43,7 @@ export type ForecastDay = {
   date: string;
   minTemp: number;
   maxTemp: number;
+  weatherCode: number;
 };
 
 export type HourlyForecastItem = {

@@ -10,15 +10,17 @@ import { getDateKey, getHourLabel } from '../../../shared/lib/date';
 export function mapCurrentWeather(response: ForecastApiResponse): CurrentWeather {
   return {
     time: response.current.time,
+    isDay: response.current.is_day === 1,
     temperature: response.current.temperature_2m,
     humidity: response.current.relative_humidity_2m,
+    weatherCode: response.current.weather_code,
     windSpeed: response.current.wind_speed_10m,
   };
 }
 
 export function mapDailyForecast(response: ForecastApiResponse): ForecastDay[] {
-  const { time, temperature_2m_max, temperature_2m_min } = response.daily;
-  const length = Math.min(time.length, temperature_2m_max.length, temperature_2m_min.length);
+  const { time, temperature_2m_max, temperature_2m_min, weather_code } = response.daily;
+  const length = Math.min(time.length, temperature_2m_max.length, temperature_2m_min.length, weather_code.length);
 
   const days: ForecastDay[] = [];
   for (let i = 0; i < length; i += 1) {
@@ -26,6 +28,7 @@ export function mapDailyForecast(response: ForecastApiResponse): ForecastDay[] {
       date: time[i],
       minTemp: temperature_2m_min[i],
       maxTemp: temperature_2m_max[i],
+      weatherCode: weather_code[i],
     });
   }
 

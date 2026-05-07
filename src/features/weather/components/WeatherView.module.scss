@@ -46,11 +46,40 @@
   letter-spacing: -0.06em;
 }
 
+.currentCard {
+  display: grid;
+  gap: 1rem;
+}
+
+.currentHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.currentBody {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.conditionText {
+  margin: 0.7rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.weatherIcon {
+  width: 88px;
+  height: 88px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
 .currentDetails {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1rem;
 }
 
 .detailPill {
@@ -108,10 +137,34 @@
   letter-spacing: 0.08em;
 }
 
+.dayHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.dayLabel {
+  display: grid;
+  gap: 0.35rem;
+}
+
 .dayDate {
   font-family: var(--font-display);
   font-size: 1.25rem;
   line-height: 1;
+}
+
+.dayIcon {
+  width: 2.6rem;
+  height: 2.6rem;
+  object-fit: contain;
+}
+
+.dayCondition {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
 }
 
 .tempRange {
@@ -245,6 +298,15 @@
   .panel {
     padding: 1rem;
     border-radius: 1.2rem;
+  }
+
+  .currentHeader {
+    align-items: center;
+  }
+
+  .weatherIcon {
+    width: 72px;
+    height: 72px;
   }
 
   .forecastGrid {
