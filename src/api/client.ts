@@ -12,11 +12,11 @@ export const buildQueryParams = (params: Record<string, QueryValue>) => {
 
 
 
-export const generalFetcher = async <T>(baseUrl: string, params = {}, signal): Promise<T> => {
+export const generalFetcher = async <T>(baseUrl: string, params = {}, signal?: AbortSignal): Promise<T> => {
     const url = params ? `${baseUrl}?${buildQueryParams(params).toString()}` : baseUrl
     const response = await fetch (url, {
         headers: {
-            'Content-Type': 'application/json',
+            'Accept': 'application/json',
         },
         signal,
     })

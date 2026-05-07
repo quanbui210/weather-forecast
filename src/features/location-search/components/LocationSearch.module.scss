@@ -1,0 +1,126 @@
+.search {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.clearButton {
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.field {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  min-height: 3.35rem;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.input:focus {
+  border-color: rgba(17, 24, 39, 0.2);
+  box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.06);
+}
+
+.input::placeholder {
+  color: rgba(32, 27, 22, 0.38);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 0.45rem;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 24px 80px rgba(45, 39, 31, 0.14);
+  backdrop-filter: blur(18px);
+}
+
+.resultsList {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resultButton {
+  display: grid;
+  width: 100%;
+  gap: 0.15rem;
+  padding: 0.75rem 0.95rem;
+  border: 0;
+  border-radius: 0.95rem;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.resultButton:hover {
+  background: rgba(17, 24, 39, 0.05);
+}
+
+.resultPrimary {
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.empty {
+  margin: 0;
+  padding: 0.9rem 0.95rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .input {
+    min-height: 3.1rem;
+    font-size: 0.95rem;
+  }
+}
