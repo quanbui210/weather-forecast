@@ -1,30 +1,44 @@
 import { useState } from 'react'
 
 import { useLocationSearch } from '../hooks/useLocationSearch'
-import type { GeocodingApiLocation } from '../types'
+import type { GeocodingApiLocation, UserLocation } from '../types'
 import { SearchResults } from './SearchResults'
 import styles from './LocationSearch.module.scss'
+import locationIcon from '../../../../public/my-location.svg'
 
 type LocationSearchProps = {
-  selectedLocation?: GeocodingApiLocation | null
-  onSelectLocation: (location: GeocodingApiLocation) => void
+  selectedLocation?: GeocodingApiLocation | null | UserLocation
+  onSelectLocation: (location: GeocodingApiLocation | UserLocation | null) => void
   onClearSelection?: () => void
 }
 
-function formatResultLabel(location: GeocodingApiLocation): string {
-  return [location.name, location.admin1, location.country].filter(Boolean).join(', ')
+function formatResultLabel(location: GeocodingApiLocation | UserLocation): string {
+  // console.log(.name)
+  if (location) {
+    return [(location as GeocodingApiLocation).name, (location as GeocodingApiLocation).admin1, (location as GeocodingApiLocation).country].filter(Boolean).join(', ')
+  }
+  return ''
 }
 
 export function LocationSearch({ selectedLocation, onSelectLocation, onClearSelection }: LocationSearchProps) {
   const [query, setQuery] = useState(selectedLocation ? formatResultLabel(selectedLocation) : '')
+  // console.log("location obj: ",selectedLocation)
+  // console.log("formatted location: ", formatResultLabel(selectedLocation))
   const [isFocused, setIsFocused] = useState(false)
-
   const { locations, loading, error } = useLocationSearch(query)
-
   const hasQuery = query.trim().length > 0
   const isMinLength = query.trim().length >= 2
   const shouldShowResults = isFocused && hasQuery
-
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position)=>{
+        const {latitude,longitude} = position.coords
+        console.log("latitude: ",latitude)
+        console.log("longitude: ",longitude)
+        onSelectLocation({latitude:latitude,longitude:longitude})
+      })
+    }
+  }
   function handleSelect(location: GeocodingApiLocation) {
     onSelectLocation(location)
     setQuery(formatResultLabel(location))
@@ -68,7 +82,11 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
           autoComplete="off"
           inputMode="search"
         />
-
+        <button className={styles.locationButton} type="button" onClick={() => {
+          getUserLocation()
+          setQuery('')
+          setIsFocused(true)
+        }}><i><img src={locationIcon} alt="location icon" /></i></button>
         {shouldShowResults ? (
           <SearchResults
             results={locations}

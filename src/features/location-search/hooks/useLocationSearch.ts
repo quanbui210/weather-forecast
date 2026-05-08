@@ -27,7 +27,6 @@ export const useLocationSearch = (query: string) => {
           if (error instanceof Error && error.name === 'AbortError') {
             return
           }
-
           setError(error instanceof Error ? error.message : 'Unknown error')
         } finally {
           if (!controller.signal.aborted) {

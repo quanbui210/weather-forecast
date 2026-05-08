@@ -19,42 +19,31 @@ export function mapCurrentWeather(response: ForecastApiResponse): CurrentWeather
 }
 
 export function mapDailyForecast(response: ForecastApiResponse): ForecastDay[] {
-  const { time, temperature_2m_max, temperature_2m_min, weather_code } = response.daily;
-  const length = Math.min(time.length, temperature_2m_max.length, temperature_2m_min.length, weather_code.length);
-
-  const days: ForecastDay[] = [];
-  for (let i = 0; i < length; i += 1) {
-    days.push({
-      date: time[i],
-      minTemp: temperature_2m_min[i],
-      maxTemp: temperature_2m_max[i],
-      weatherCode: weather_code[i],
-    });
-  }
+  const { temperature_2m_max, temperature_2m_min, weather_code } = response.daily;
+  const days = response.daily.time.map((day, index) => ({
+    date: day,
+    minTemp: temperature_2m_min[index],
+    maxTemp: temperature_2m_max[index],
+    weatherCode: weather_code[index],
+  }))
 
   return days;
 }
 
 export function mapHourlyForecast(response: ForecastApiResponse): HourlyForecastItem[] {
-  const { time, temperature_2m } = response.hourly;
-  const length = Math.min(time.length, temperature_2m.length);
-
-  const humidity = response.hourly.relative_humidity_2m;
-  const windSpeed = response.hourly.wind_speed_10m;
-
-  const hourly: HourlyForecastItem[] = [];
-  for (let i = 0; i < length; i += 1) {
-    const iso = time[i];
-
-    hourly.push({
-      time: iso,
-      date: getDateKey(iso),
-      hourLabel: getHourLabel(iso),
-      temperature: temperature_2m[i],
-      humidity: humidity?.[i],
-      windSpeed: windSpeed?.[i],
-    });
-  }
+  const { time, temperature_2m, weather_code, relative_humidity_2m: humidity, wind_speed_10m: windSpeed } = response.hourly;
+  // const humidity = response.hourly.relative_humidity_2m;
+  // const windSpeed = response.hourly.wind_speed_10m;
+  console.log(response.hourly.weather_code)
+  const hourly = time.map((iso, index) => ({
+    time: iso,
+    date: getDateKey(iso),
+    hourLabel: getHourLabel(iso),
+    temperature: temperature_2m[index],
+    humidity: humidity?.[index],
+    windSpeed: windSpeed?.[index],
+    weatherCode: weather_code[index],
+  }))
 
   return hourly;
 }

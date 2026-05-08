@@ -1,11 +1,10 @@
 import styles from './App.module.scss'
-import { LocationSearch, type GeocodingApiLocation } from '../features/location-search'
+import { LocationSearch, type GeocodingApiLocation, type UserLocation } from '../features/location-search'
 import { WeatherView } from '../features/weather'
 import { useState } from 'react'
 
 function App() {
-  const [selectedLocation, setSelectedLocation] = useState<GeocodingApiLocation | null>(null)
-
+  const [selectedLocation, setSelectedLocation] = useState<GeocodingApiLocation | UserLocation | null>(null)
   return (
     <div className={styles.page}>
       <main className={styles.container}>

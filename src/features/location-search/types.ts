@@ -14,6 +14,11 @@ export type GeocodingApiLocation = {
     admin1: string
 }
 
+export type UserLocation = {
+  latitude: number,
+  longitude: number,
+}
+
 export type LocationSearchResponse = {
   results?: GeocodingApiLocation[]
 }

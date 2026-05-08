@@ -5,7 +5,7 @@ const WEATHER_FORECAST_URL = 'https://api.open-meteo.com/v1/forecast'
 const defaultParams = {
     current: "is_day,temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m",
     daily: "temperature_2m_max,temperature_2m_min,weather_code",
-    hourly: 'temperature_2m,relative_humidity_2m,wind_speed_10m',
+    hourly: 'weather_code,temperature_2m,relative_humidity_2m,wind_speed_10m',
     forecast_days: 7,
     timezone: "auto"
 }

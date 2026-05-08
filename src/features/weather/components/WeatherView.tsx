@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 
 import { StateView } from '../../../shared/components/StateView/StateView'
-import type { GeocodingApiLocation } from '../../location-search'
+import type { GeocodingApiLocation, UserLocation } from '../../location-search'
 import { getInitialSelectedDate, selectHourlyForDate } from '../model/selectors'
 import { useForecast } from '../hooks/useForecast'
 import { CurrentWeatherCard } from './CurrentWeatherCard'
@@ -10,11 +10,14 @@ import { HourlyForecast } from './HourlyForecast'
 import styles from './WeatherView.module.scss'
 
 type WeatherViewProps = {
-  location: GeocodingApiLocation | null
+  location: GeocodingApiLocation | UserLocation | null
 }
 
-function formatLocationLabel(location: GeocodingApiLocation): string {
-  return [location.name, location.admin1, location.country].filter(Boolean).join(', ')
+function formatLocationLabel(location: GeocodingApiLocation | UserLocation | null): string {
+  if (!location) {
+    return ''
+  }
+  return [(location as GeocodingApiLocation).name, (location as GeocodingApiLocation).admin1, (location as GeocodingApiLocation).country].filter(Boolean).join(', ')
 }
 
 function LoadingView() {
@@ -27,7 +30,7 @@ function LoadingView() {
 }
 
 export function WeatherView({ location }: WeatherViewProps) {
-  const { forecast, loading, error } = useForecast(location)
+  const { forecast, loading, error } = useForecast(location as GeocodingApiLocation)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
   const activeSelectedDate = useMemo(() => {

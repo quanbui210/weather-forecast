@@ -28,6 +28,7 @@ export interface HourlyWeatherApi {
   temperature_2m: number[];
   relative_humidity_2m?: number[];
   wind_speed_10m?: number[];
+  weather_code: number[];
 }
 
 export type CurrentWeather = {
@@ -47,6 +48,7 @@ export type ForecastDay = {
 };
 
 export type HourlyForecastItem = {
+  weatherCode: number;
   time: string;
   date: string;
   hourLabel: string;
