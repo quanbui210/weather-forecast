@@ -14,7 +14,6 @@ export const useForecast = (location: {
     const [forecast, setForecast] = useState<ForecastViewModel | null>(null);
     const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    console.log("LOCATION: ", location)
     useEffect(() => {
         if (!location) {
             return
@@ -34,7 +33,6 @@ export const useForecast = (location: {
             if (error instanceof Error && error.name === 'AbortError') {
                 return
             }
-
             setForecast(null)
             setError(error instanceof Error ? error : new Error('Unknown error'))
         } finally {

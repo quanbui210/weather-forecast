@@ -32,9 +32,6 @@ export function mapDailyForecast(response: ForecastApiResponse): ForecastDay[] {
 
 export function mapHourlyForecast(response: ForecastApiResponse): HourlyForecastItem[] {
   const { time, temperature_2m, weather_code, relative_humidity_2m: humidity, wind_speed_10m: windSpeed } = response.hourly;
-  // const humidity = response.hourly.relative_humidity_2m;
-  // const windSpeed = response.hourly.wind_speed_10m;
-  console.log(response.hourly.weather_code)
   const hourly = time.map((iso, index) => ({
     time: iso,
     date: getDateKey(iso),

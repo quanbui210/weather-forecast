@@ -2,6 +2,7 @@ import type { HourlyForecastItem } from '../types'
 import { formatMonthDay } from '../../../shared/lib/date'
 import { formatHumidity, formatTemperature, formatWindSpeed } from '../../../shared/lib/format'
 import styles from './WeatherView.module.scss'
+import { getWeatherVisual } from '../model/weatherCode'
 
 type HourlyForecastProps = {
   items: HourlyForecastItem[]
@@ -37,7 +38,10 @@ export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
       </div>
 
       <div className={styles.hourlyList}>
-        {items.map((item) => (
+        {items.map((item) => {
+          const visual = getWeatherVisual(item.weatherCode)
+          console.log(visual)
+          return (
           <div key={item.time} className={styles.hourlyRow}>
             <div className={styles.hourlyInfo}>
               <span className={styles.hourlyTime}>{item.hourLabel}</span>
@@ -55,7 +59,8 @@ export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
             </div>
             <span className={styles.hourlyTemp}>{formatTemperature(item.temperature)}</span>
           </div>
-        ))}
+        )
+        })}
       </div>
     </section>
   )
