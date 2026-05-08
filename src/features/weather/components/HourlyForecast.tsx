@@ -39,27 +39,50 @@ export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
 
       <div className={styles.hourlyList}>
         {items.map((item) => {
-          const visual = getWeatherVisual(item.weatherCode)
-          console.log(visual)
+          const visual = getWeatherVisual(item.weatherCode, item.isDay)
+          const hasMeta = item.humidity !== undefined || item.windSpeed !== undefined
+
           return (
-          <div key={item.time} className={styles.hourlyRow}>
-            <div className={styles.hourlyInfo}>
-              <span className={styles.hourlyTime}>{item.hourLabel}</span>
-              <span className={styles.hourlyMeta}>
-                {item.humidity !== undefined ? `Hum ${formatHumidity(item.humidity)}` : null}
-                {item.humidity !== undefined && item.windSpeed !== undefined ? ' · ' : null}
-                {item.windSpeed !== undefined ? `Wind ${formatWindSpeed(item.windSpeed)}` : null}
-              </span>
-            </div>
-            <div className={styles.hourlyBar} aria-hidden="true">
-              <div
-                className={styles.hourlyBarFill}
-                style={{ width: getFillWidth(item.temperature, min, max) }}
-              />
-            </div>
-            <span className={styles.hourlyTemp}>{formatTemperature(item.temperature)}</span>
-          </div>
-        )
+            <article key={item.time} className={styles.hourlyRow}>
+              <div className={styles.hourlyTop}>
+                <div className={styles.hourlyTimeBlock}>
+                  <span className={styles.hourlyTime}>{item.hourLabel}</span>
+                </div>
+
+                <div className={styles.hourlyVisual}>
+                  <img className={styles.hourlyIcon} src={visual.image} alt="" aria-hidden="true" />
+                  <div className={styles.hourlyInfo}>
+                    <span className={styles.hourlyDescription}>{visual.description}</span>
+                    <span className={styles.hourlyMeta}>{item.isDay ? 'Daytime' : 'Night'}</span>
+                  </div>
+                </div>
+
+                <span className={styles.hourlyTemp}>{formatTemperature(item.temperature)}</span>
+              </div>
+
+              <div className={styles.hourlyBottom}>
+                <div className={styles.hourlyBarWrap}>
+                  <div className={styles.hourlyBar} aria-hidden="true">
+                    <div
+                      className={styles.hourlyBarFill}
+                      style={{ width: getFillWidth(item.temperature, min, max) }}
+                    />
+                  </div>
+                </div>
+
+                {hasMeta ? (
+                  <div className={styles.hourlyStats}>
+                    {item.humidity !== undefined ? (
+                      <span className={styles.hourlyStat}>Humidity {formatHumidity(item.humidity)}</span>
+                    ) : null}
+                    {item.windSpeed !== undefined ? (
+                      <span className={styles.hourlyStat}>Wind {formatWindSpeed(item.windSpeed)}</span>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            </article>
+          )
         })}
       </div>
     </section>

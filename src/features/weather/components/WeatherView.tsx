@@ -11,13 +11,27 @@ import styles from './WeatherView.module.scss'
 
 type WeatherViewProps = {
   location: GeocodingApiLocation | UserLocation | null
+  onSelectLocation: (location: GeocodingApiLocation | UserLocation | null) => void
 }
+
+const EUROPE_DESTINATIONS: Array<{ name: string; latitude: number; longitude: number }> = [
+  { name: 'Helsinki', latitude: 60.1699, longitude: 24.9384 },
+  { name: 'Paris', latitude: 48.8566, longitude: 2.3522 },
+  { name: 'Amsterdam', latitude: 52.3676, longitude: 4.9041 },
+  { name: 'Vienna', latitude: 48.2082, longitude: 16.3738 },
+  { name: 'Lisbon', latitude: 38.7223, longitude: -9.1393 },
+]
 
 function formatLocationLabel(location: GeocodingApiLocation | UserLocation | null): string {
   if (!location) {
     return ''
   }
-  return [(location as GeocodingApiLocation).name, (location as GeocodingApiLocation).admin1, (location as GeocodingApiLocation).country].filter(Boolean).join(', ')
+
+  if ('name' in location) {
+    return [location.name, location.admin1, location.country].filter(Boolean).join(', ')
+  }
+
+  return location.label ?? ''
 }
 
 function LoadingView() {
@@ -29,7 +43,7 @@ function LoadingView() {
   )
 }
 
-export function WeatherView({ location }: WeatherViewProps) {
+export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
   const { forecast, loading, error } = useForecast(location as GeocodingApiLocation)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
 
@@ -59,6 +73,29 @@ export function WeatherView({ location }: WeatherViewProps) {
         eyebrow="Forecast"
         title="Choose a location"
         message="Search for a city above or use your current location to open the weather panels."
+        action={
+          <div className={styles.emptyStateAction}>
+            <p className={styles.emptyStateLabel}></p>
+            <div className={styles.emptyStateChips}>
+              {EUROPE_DESTINATIONS.map((city) => (
+                <button
+                  key={city.name}
+                  className={styles.emptyStateChip}
+                  type="button"
+                  onClick={() =>
+                    onSelectLocation({
+                      latitude: city.latitude,
+                      longitude: city.longitude,
+                      label: city.name,
+                    })
+                  }
+                >
+                  {city.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        }
       />
     )
   }

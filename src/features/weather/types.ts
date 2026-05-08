@@ -49,6 +49,7 @@ export type ForecastDay = {
 
 export type HourlyForecastItem = {
   weatherCode: number;
+  isDay: boolean;
   time: string;
   date: string;
   hourLabel: string;

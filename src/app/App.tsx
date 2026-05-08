@@ -20,7 +20,7 @@ function App() {
           />
         </section>
 
-        <WeatherView location={selectedLocation} />
+        <WeatherView location={selectedLocation} onSelectLocation={setSelectedLocation} />
       </main>
     </div>
   )

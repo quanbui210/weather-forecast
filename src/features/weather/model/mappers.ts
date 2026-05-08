@@ -7,6 +7,17 @@ import type {
 } from '../types';
 import { getDateKey, getHourLabel } from '../../../shared/lib/date';
 
+function getIsDayFromHour(iso: string): boolean {
+  const timePart = iso.split('T')[1];
+  const hour = Number(timePart?.slice(0, 2));
+
+  if (Number.isNaN(hour)) {
+    return true;
+  }
+
+  return hour >= 6 && hour < 18;
+}
+
 export function mapCurrentWeather(response: ForecastApiResponse): CurrentWeather {
   return {
     time: response.current.time,
@@ -36,6 +47,7 @@ export function mapHourlyForecast(response: ForecastApiResponse): HourlyForecast
     time: iso,
     date: getDateKey(iso),
     hourLabel: getHourLabel(iso),
+    isDay: getIsDayFromHour(iso),
     temperature: temperature_2m[index],
     humidity: humidity?.[index],
     windSpeed: windSpeed?.[index],

@@ -17,6 +17,7 @@ export type GeocodingApiLocation = {
 export type UserLocation = {
   latitude: number,
   longitude: number,
+  label?: string,
 }
 
 export type LocationSearchResponse = {

@@ -13,17 +13,15 @@ type LocationSearchProps = {
 }
 
 function formatResultLabel(location: GeocodingApiLocation | UserLocation): string {
-  // console.log(.name)
-  if (location) {
+  if ((location as GeocodingApiLocation).name) {
     return [(location as GeocodingApiLocation).name, (location as GeocodingApiLocation).admin1, (location as GeocodingApiLocation).country].filter(Boolean).join(', ')
   }
-  return ''
+
+  return (location as UserLocation).label ?? ''
 }
 
 export function LocationSearch({ selectedLocation, onSelectLocation, onClearSelection }: LocationSearchProps) {
   const [query, setQuery] = useState(selectedLocation ? formatResultLabel(selectedLocation) : '')
-  // console.log("location obj: ",selectedLocation)
-  // console.log("formatted location: ", formatResultLabel(selectedLocation))
   const [isFocused, setIsFocused] = useState(false)
   const { locations, loading, error } = useLocationSearch(query)
   const hasQuery = query.trim().length > 0
@@ -35,7 +33,7 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
         const {latitude,longitude} = position.coords
         console.log("latitude: ",latitude)
         console.log("longitude: ",longitude)
-        onSelectLocation({latitude:latitude,longitude:longitude})
+        onSelectLocation({latitude:latitude,longitude:longitude, label: 'Current location'})
       })
     }
   }
