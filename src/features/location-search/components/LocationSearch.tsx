@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useLocationSearch } from '../hooks/useLocationSearch'
-import type { GeocodingApiLocation, UserLocation } from '../types'
+import type { GeocodingApiLocation, SearchHistoryItem, UserLocation } from '../types'
 import { SearchResults } from './SearchResults'
 import styles from './LocationSearch.module.scss'
-import locationIcon from '../../../../public/my-location.svg'
+import locationIcon from '../../../assets/my-location.svg'
+import SearchHistoryList from './SearchHistoryList'
 
 type LocationSearchProps = {
   selectedLocation?: GeocodingApiLocation | null | UserLocation
@@ -16,31 +17,78 @@ function formatResultLabel(location: GeocodingApiLocation | UserLocation): strin
   if ((location as GeocodingApiLocation).name) {
     return [(location as GeocodingApiLocation).name, (location as GeocodingApiLocation).admin1, (location as GeocodingApiLocation).country].filter(Boolean).join(', ')
   }
-
   return (location as UserLocation).label ?? ''
+}
+
+function loadSearchHistory(): SearchHistoryItem[] {
+  if (typeof window === 'undefined') {
+    return []
+  }
+  const raw = localStorage.getItem('weather.searchHistory')
+  if (!raw) return []
+  const parsed = JSON.parse(raw) as SearchHistoryItem[]
+  return Array.isArray(parsed) ? parsed.slice(0, 5) : []
+   
 }
 
 export function LocationSearch({ selectedLocation, onSelectLocation, onClearSelection }: LocationSearchProps) {
   const [query, setQuery] = useState(selectedLocation ? formatResultLabel(selectedLocation) : '')
   const [isFocused, setIsFocused] = useState(false)
   const { locations, loading, error } = useLocationSearch(query)
+  const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>(loadSearchHistory)
   const hasQuery = query.trim().length > 0
   const isMinLength = query.trim().length >= 2
   const shouldShowResults = isFocused && hasQuery
+  const shouldShowHistory = isFocused && !hasQuery
+
+  function buildHistoryItem(location: GeocodingApiLocation): SearchHistoryItem {
+    const label = formatResultLabel(location)
+    const key = location.id ? String(location.id) : `${location.latitude}:${location.longitude}:${location.name}`
+    return {
+      key,
+      label,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      savedAt: Date.now(),
+    }
+  }
+
+  function addToHistory(location: GeocodingApiLocation) {
+    const nextItem = buildHistoryItem(location)
+    setSearchHistory((previous) => {
+      const deduped = previous.filter((item) => item.key !== nextItem.key)
+      return [nextItem, ...deduped].slice(0, 5)
+    })
+  }
+
   const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position)=>{
         const {latitude,longitude} = position.coords
-        console.log("latitude: ",latitude)
-        console.log("longitude: ",longitude)
         onSelectLocation({latitude:latitude,longitude:longitude, label: 'Current location'})
       })
     }
   }
   function handleSelect(location: GeocodingApiLocation) {
+    const formattedResult = formatResultLabel(location)
+    addToHistory(location)
     onSelectLocation(location)
-    setQuery(formatResultLabel(location))
+    setQuery(formattedResult)
     setIsFocused(false)
+  }
+
+  function handleHistorySelect(item: SearchHistoryItem) {
+    onSelectLocation({
+      latitude: item.latitude,
+      longitude: item.longitude,
+      label: item.label,
+    })
+    setQuery(item.label)
+    setIsFocused(false)
+  }
+
+  function handleRemoveHistory(key: string) {
+    setSearchHistory((previous) => previous.filter((item) => item.key !== key))
   }
 
   function handleClear() {
@@ -48,6 +96,10 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
     setQuery('')
     setIsFocused(true)
   }
+
+  useEffect(() => {
+    localStorage.setItem('weather.searchHistory', JSON.stringify(searchHistory))
+  }, [searchHistory])
 
   return (
     <div className={styles.search}>
@@ -85,6 +137,13 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
           setQuery('')
           setIsFocused(true)
         }}><i><img src={locationIcon} alt="location icon" /></i></button>
+        {shouldShowHistory ? (
+          <SearchHistoryList
+            searchHistory={searchHistory}
+            onSelectHistory={handleHistorySelect}
+            onRemoveHistory={handleRemoveHistory}
+          />
+        ) : null}
         {shouldShowResults ? (
           <SearchResults
             results={locations}

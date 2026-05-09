@@ -17,7 +17,7 @@ export function ForecastDays({ days, selectedDate, onSelectDate }: ForecastDaysP
       <h2 className={styles.panelTitle}>7 day forecast</h2>
 
       <div className={styles.forecastGrid}>
-        {days.map((day) => {
+        {days.map((day, index) => {
           const isActive = selectedDate === day.date
           const visual = getWeatherVisual(day.weatherCode)
 
@@ -26,6 +26,7 @@ export function ForecastDays({ days, selectedDate, onSelectDate }: ForecastDaysP
               key={day.date}
               type="button"
               className={`${styles.dayButton} ${isActive ? styles.dayButtonActive : ''}`}
+              style={{ animationDelay: `${index * 45}ms` }}
               onClick={() => onSelectDate(day.date)}
             >
               <div className={styles.dayHeader}>

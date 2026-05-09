@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import type { HourlyForecastItem } from '../types'
 import { formatMonthDay } from '../../../shared/lib/date'
 import { formatHumidity, formatTemperature, formatWindSpeed } from '../../../shared/lib/format'
@@ -19,6 +20,49 @@ function getFillWidth(value: number, min: number, max: number): string {
 }
 
 export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
+  const rowRefs = useRef([])
+  const [visibleRows, setVisibleRows] = useState<Record<string, boolean>>({})
+
+  useEffect(() => {
+
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return
+          }
+
+          const rowKey = entry.target.getAttribute('data-row-key')
+          if (!rowKey) {
+            return
+          }
+
+          setVisibleRows((previous) => {
+            if (previous[rowKey]) {
+              return previous
+            }
+
+            return {
+              ...previous,
+              [rowKey]: true,
+            }
+          })
+          observer.unobserve(entry.target)
+        })
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -8% 0px' },
+    )
+
+    rowRefs.current.forEach((row) => {
+      if (row) {
+        observer.observe(row)
+      }
+    })
+
+    return () => observer.disconnect()
+  }, [items, selectedDate])
+
   if (!selectedDate || items.length === 0) {
     return null
   }
@@ -38,12 +82,21 @@ export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
       </div>
 
       <div className={styles.hourlyList}>
-        {items.map((item) => {
+        {items.map((item, index) => {
           const visual = getWeatherVisual(item.weatherCode, item.isDay)
           const hasMeta = item.humidity !== undefined || item.windSpeed !== undefined
+          const rowDelay = index * 36
 
           return (
-            <article key={item.time} className={styles.hourlyRow}>
+            <article
+              key={item.time}
+              ref={(element) => {
+                rowRefs.current[index] = element
+              }}
+              data-row-key={item.time}
+              className={`${styles.hourlyRow} ${visibleRows[item.time] ? styles.hourlyRowVisible : ''}`}
+              style={{ animationDelay: `${rowDelay}ms` }}
+            >
               <div className={styles.hourlyTop}>
                 <div className={styles.hourlyTimeBlock}>
                   <span className={styles.hourlyTime}>{item.hourLabel}</span>
@@ -64,8 +117,11 @@ export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
                 <div className={styles.hourlyBarWrap}>
                   <div className={styles.hourlyBar} aria-hidden="true">
                     <div
-                      className={styles.hourlyBarFill}
-                      style={{ width: getFillWidth(item.temperature, min, max) }}
+                      className={`${styles.hourlyBarFill} ${visibleRows[item.time] ? styles.hourlyBarFillVisible : ''}`}
+                      style={{
+                        width: getFillWidth(item.temperature, min, max),
+                        animationDelay: `${rowDelay + 90}ms`,
+                      }}
                     />
                   </div>
                 </div>

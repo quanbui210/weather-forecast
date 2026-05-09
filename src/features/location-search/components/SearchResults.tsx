@@ -26,7 +26,7 @@ export function SearchResults({ results, isLoading, error, hasQuery, isMinLength
   if (!hasQuery) {
     return null
   }
-
+  
   return (
     <div className={styles.dropdown} role="listbox" aria-label="Location results">
       {!isMinLength ? <p className={styles.empty}>Type at least 2 characters.</p> : null}

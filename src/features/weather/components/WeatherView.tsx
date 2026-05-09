@@ -46,6 +46,12 @@ function LoadingView() {
 export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
   const { forecast, loading, error } = useForecast(location as GeocodingApiLocation)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const locationKey =
+    location && 'name' in location
+      ? location.id
+      : location
+        ? `${location.latitude.toFixed(2)}:${location.longitude.toFixed(2)}:${(location as GeocodingApiLocation).name ?? 'coords'}`
+        : 'none'
 
   const activeSelectedDate = useMemo(() => {
     if (!forecast) {
@@ -75,7 +81,6 @@ export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
         message="Search for a city above or use your current location to open the weather panels."
         action={
           <div className={styles.emptyStateAction}>
-            <p className={styles.emptyStateLabel}></p>
             <div className={styles.emptyStateChips}>
               {EUROPE_DESTINATIONS.map((city) => (
                 <button
@@ -119,7 +124,7 @@ export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
   }
 
   return (
-    <section className={styles.section}>
+    <section key={locationKey} className={`${styles.section} ${styles.sectionReveal}`}>
       <CurrentWeatherCard
         weather={forecast.current}
         locationLabel={formatLocationLabel(location)}
@@ -132,7 +137,7 @@ export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
         onSelectDate={setSelectedDate}
       />
 
-      <HourlyForecast items={hourlyItems} selectedDate={activeSelectedDate} />
+      <HourlyForecast key={activeSelectedDate ?? 'hourly'} items={hourlyItems} selectedDate={activeSelectedDate} />
     </section>
   )
 }

@@ -23,3 +23,11 @@ export type UserLocation = {
 export type LocationSearchResponse = {
   results?: GeocodingApiLocation[]
 }
+
+export type SearchHistoryItem = {
+  key: string
+  label: string
+  latitude: number
+  longitude: number
+  savedAt: number
+}
