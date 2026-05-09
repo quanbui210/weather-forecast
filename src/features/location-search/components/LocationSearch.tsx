@@ -94,7 +94,7 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
   function handleClear() {
     onClearSelection?.()
     setQuery('')
-    setIsFocused(true)
+    setIsFocused(false)
   }
 
   useEffect(() => {
