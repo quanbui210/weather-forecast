@@ -46,6 +46,7 @@ function LoadingView() {
 export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
   const { forecast, loading, error } = useForecast(location as GeocodingApiLocation)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  console.log(location)
   const locationKey =
     location && 'name' in location
       ? location.id
@@ -86,6 +87,7 @@ export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
                 <button
                   key={city.name}
                   className={styles.emptyStateChip}
+                  name="location-button"
                   type="button"
                   onClick={() =>
                     onSelectLocation({
@@ -122,7 +124,6 @@ export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
   if (!forecast) {
     return null
   }
-
   return (
     <section key={locationKey} className={`${styles.section} ${styles.sectionReveal}`}>
       <CurrentWeatherCard

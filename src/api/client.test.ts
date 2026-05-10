@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { buildQueryParams, generalFetcher } from "./client";
 
@@ -26,6 +27,10 @@ describe("buildQueryParams", () => {
 
 
 describe("generalFetcher", () => {
+  afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.restoreAllMocks()
+})
   it('calls fetch with correct url and returns json', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => ({
       ok: true,
@@ -40,14 +45,10 @@ describe("generalFetcher", () => {
     })
   
     expect(data).toEqual({ results: [] })
-    const calledUrl = fetch.mock.calls[0][0] as string
+    const calledUrl = (fetch as any).mock.calls[0][0] as string
     const url = new URL(calledUrl)
     expect(url.searchParams.get('name')).toBe('Helsinki')
   })
 
 })
 
-afterEach(() => {
-  vi.unstubAllGlobals()
-  vi.restoreAllMocks()
-})

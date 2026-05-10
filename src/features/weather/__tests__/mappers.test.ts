@@ -27,7 +27,6 @@ const exampleResponse: ForecastApiResponse = {
         relative_humidity_2m: [50, 52],
         wind_speed_10m: [20, 22],
     }
-
 }
 
 describe("map daily forecast data to a more UI friendly format", () => {
