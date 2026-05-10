@@ -428,18 +428,20 @@
   background: rgba(180, 106, 60, 0.08);
 }
 
-.loadingGrid { display: grid; gap: 0.9rem; }
+.loadingGrid {
+  display: grid;
+  gap: 0.9rem;
+}
 
 .skeletonPanel {
   min-height: 12rem;
   border-radius: 1.5rem;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.55) 0%,
-      rgba(255, 255, 255, 0.9) 50%,
-      rgba(255, 255, 255, 0.55) 100%
-    );
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.55) 100%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.8s linear infinite;
 }

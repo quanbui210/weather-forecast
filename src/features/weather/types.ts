@@ -1,66 +1,66 @@
 export interface ForecastApiResponse {
-  latitude: number;
-  longitude: number;
-  timezone: string;
-  current: CurrentWeatherApi;
-  daily: DailyWeatherApi;
-  hourly: HourlyWeatherApi;
+  latitude: number
+  longitude: number
+  timezone: string
+  current: CurrentWeatherApi
+  daily: DailyWeatherApi
+  hourly: HourlyWeatherApi
 }
 
 export interface CurrentWeatherApi {
-  time: string;
-  is_day: number;
-  temperature_2m: number;
-  relative_humidity_2m: number;
-  weather_code: number;
-  wind_speed_10m: number;
+  time: string
+  is_day: number
+  temperature_2m: number
+  relative_humidity_2m: number
+  weather_code: number
+  wind_speed_10m: number
 }
 
 export interface DailyWeatherApi {
-  time: string[];
-  temperature_2m_max: number[];
-  temperature_2m_min: number[];
-  weather_code: number[];
+  time: string[]
+  temperature_2m_max: number[]
+  temperature_2m_min: number[]
+  weather_code: number[]
 }
 
 export interface HourlyWeatherApi {
-  time: string[];
-  temperature_2m: number[];
-  relative_humidity_2m?: number[];
-  wind_speed_10m?: number[];
-  weather_code: number[];
+  time: string[]
+  temperature_2m: number[]
+  relative_humidity_2m?: number[]
+  wind_speed_10m?: number[]
+  weather_code: number[]
 }
 
 export type CurrentWeather = {
-  time: string;
-  isDay: boolean;
-  temperature: number;
-  humidity: number;
-  weatherCode: number;
-  windSpeed: number;
-};
+  time: string
+  isDay: boolean
+  temperature: number
+  humidity: number
+  weatherCode: number
+  windSpeed: number
+}
 
 export type ForecastDay = {
-  date: string;
-  minTemp: number;
-  maxTemp: number;
-  weatherCode: number;
-};
+  date: string
+  minTemp: number
+  maxTemp: number
+  weatherCode: number
+}
 
 export type HourlyForecastItem = {
-  weatherCode: number;
-  isDay: boolean;
-  time: string;
-  date: string;
-  hourLabel: string;
-  temperature: number;
-  humidity?: number;
-  windSpeed?: number;
-};
+  weatherCode: number
+  isDay: boolean
+  time: string
+  date: string
+  hourLabel: string
+  temperature: number
+  humidity?: number
+  windSpeed?: number
+}
 
 export type ForecastViewModel = {
-  timezone: string;
-  current: CurrentWeather;
-  days: ForecastDay[];
-  hourly: HourlyForecastItem[];
-};
+  timezone: string
+  current: CurrentWeather
+  days: ForecastDay[]
+  hourly: HourlyForecastItem[]
+}

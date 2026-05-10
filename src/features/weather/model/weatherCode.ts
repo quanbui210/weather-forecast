@@ -1,6 +1,5 @@
 // Copied from https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0c
 
-
 type WeatherVisual = {
   description: string
   image: string
@@ -49,12 +48,21 @@ const WEATHER_CODE_MAP: Record<number, WeatherCodeEntry> = {
     night: { description: 'Heavy Drizzle', image: 'https://openweathermap.org/img/wn/09n@2x.png' },
   },
   56: {
-    day: { description: 'Light Freezing Drizzle', image: 'https://openweathermap.org/img/wn/09d@2x.png' },
-    night: { description: 'Light Freezing Drizzle', image: 'https://openweathermap.org/img/wn/09n@2x.png' },
+    day: {
+      description: 'Light Freezing Drizzle',
+      image: 'https://openweathermap.org/img/wn/09d@2x.png',
+    },
+    night: {
+      description: 'Light Freezing Drizzle',
+      image: 'https://openweathermap.org/img/wn/09n@2x.png',
+    },
   },
   57: {
     day: { description: 'Freezing Drizzle', image: 'https://openweathermap.org/img/wn/09d@2x.png' },
-    night: { description: 'Freezing Drizzle', image: 'https://openweathermap.org/img/wn/09n@2x.png' },
+    night: {
+      description: 'Freezing Drizzle',
+      image: 'https://openweathermap.org/img/wn/09n@2x.png',
+    },
   },
   61: {
     day: { description: 'Light Rain', image: 'https://openweathermap.org/img/wn/10d@2x.png' },
@@ -69,8 +77,14 @@ const WEATHER_CODE_MAP: Record<number, WeatherCodeEntry> = {
     night: { description: 'Heavy Rain', image: 'https://openweathermap.org/img/wn/10n@2x.png' },
   },
   66: {
-    day: { description: 'Light Freezing Rain', image: 'https://openweathermap.org/img/wn/10d@2x.png' },
-    night: { description: 'Light Freezing Rain', image: 'https://openweathermap.org/img/wn/10n@2x.png' },
+    day: {
+      description: 'Light Freezing Rain',
+      image: 'https://openweathermap.org/img/wn/10d@2x.png',
+    },
+    night: {
+      description: 'Light Freezing Rain',
+      image: 'https://openweathermap.org/img/wn/10n@2x.png',
+    },
   },
   67: {
     day: { description: 'Freezing Rain', image: 'https://openweathermap.org/img/wn/10d@2x.png' },
@@ -105,8 +119,14 @@ const WEATHER_CODE_MAP: Record<number, WeatherCodeEntry> = {
     night: { description: 'Heavy Showers', image: 'https://openweathermap.org/img/wn/09n@2x.png' },
   },
   85: {
-    day: { description: 'Light Snow Showers', image: 'https://openweathermap.org/img/wn/13d@2x.png' },
-    night: { description: 'Light Snow Showers', image: 'https://openweathermap.org/img/wn/13n@2x.png' },
+    day: {
+      description: 'Light Snow Showers',
+      image: 'https://openweathermap.org/img/wn/13d@2x.png',
+    },
+    night: {
+      description: 'Light Snow Showers',
+      image: 'https://openweathermap.org/img/wn/13n@2x.png',
+    },
   },
   86: {
     day: { description: 'Snow Showers', image: 'https://openweathermap.org/img/wn/13d@2x.png' },
@@ -117,12 +137,24 @@ const WEATHER_CODE_MAP: Record<number, WeatherCodeEntry> = {
     night: { description: 'Thunderstorm', image: 'https://openweathermap.org/img/wn/11n@2x.png' },
   },
   96: {
-    day: { description: 'Light Thunderstorms With Hail', image: 'https://openweathermap.org/img/wn/11d@2x.png' },
-    night: { description: 'Light Thunderstorms With Hail', image: 'https://openweathermap.org/img/wn/11n@2x.png' },
+    day: {
+      description: 'Light Thunderstorms With Hail',
+      image: 'https://openweathermap.org/img/wn/11d@2x.png',
+    },
+    night: {
+      description: 'Light Thunderstorms With Hail',
+      image: 'https://openweathermap.org/img/wn/11n@2x.png',
+    },
   },
   99: {
-    day: { description: 'Thunderstorm With Hail', image: 'https://openweathermap.org/img/wn/11d@2x.png' },
-    night: { description: 'Thunderstorm With Hail', image: 'https://openweathermap.org/img/wn/11n@2x.png' },
+    day: {
+      description: 'Thunderstorm With Hail',
+      image: 'https://openweathermap.org/img/wn/11d@2x.png',
+    },
+    night: {
+      description: 'Thunderstorm With Hail',
+      image: 'https://openweathermap.org/img/wn/11n@2x.png',
+    },
   },
 }
 

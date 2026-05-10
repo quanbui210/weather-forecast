@@ -112,11 +112,7 @@ export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
 
   if (error && !forecast) {
     return (
-      <StateView
-        eyebrow="Forecast"
-        title="Unable to load the forecast"
-        message={error.message}
-      />
+      <StateView eyebrow="Forecast" title="Unable to load the forecast" message={error.message} />
     )
   }
 
@@ -137,7 +133,11 @@ export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
         onSelectDate={setSelectedDate}
       />
 
-      <HourlyForecast key={activeSelectedDate ?? 'hourly'} items={hourlyItems} selectedDate={activeSelectedDate} />
+      <HourlyForecast
+        key={activeSelectedDate ?? 'hourly'}
+        items={hourlyItems}
+        selectedDate={activeSelectedDate}
+      />
     </section>
   )
 }

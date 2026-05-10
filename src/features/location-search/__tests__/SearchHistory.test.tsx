@@ -3,8 +3,6 @@
 
 // import  SearchHistoryList  from '../components/SearchHistoryList'
 
-
-
 // describe('SearchHistoryList', () => {
 //   it('renders SearchHistoryList', () => {
 //     render(<SearchHistoryList />)

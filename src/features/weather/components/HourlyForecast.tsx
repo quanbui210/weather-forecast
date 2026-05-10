@@ -24,8 +24,6 @@ export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
   const [visibleRows, setVisibleRows] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
-
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -129,10 +127,14 @@ export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
                 {hasMeta ? (
                   <div className={styles.hourlyStats}>
                     {item.humidity !== undefined ? (
-                      <span className={styles.hourlyStat}>Humidity {formatHumidity(item.humidity)}</span>
+                      <span className={styles.hourlyStat}>
+                        Humidity {formatHumidity(item.humidity)}
+                      </span>
                     ) : null}
                     {item.windSpeed !== undefined ? (
-                      <span className={styles.hourlyStat}>Wind {formatWindSpeed(item.windSpeed)}</span>
+                      <span className={styles.hourlyStat}>
+                        Wind {formatWindSpeed(item.windSpeed)}
+                      </span>
                     ) : null}
                   </div>
                 ) : null}

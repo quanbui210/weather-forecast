@@ -12,7 +12,7 @@ type CurrentWeatherCardProps = {
 
 export function CurrentWeatherCard({ weather, locationLabel, timezone }: CurrentWeatherCardProps) {
   const visual = getWeatherVisual(weather.weatherCode, weather.isDay)
-  const locationName = locationLabel ? locationLabel : "Current location"
+  const locationName = locationLabel ? locationLabel : 'Current location'
   return (
     <section className={`${styles.panel} ${styles.currentCard}`}>
       <div className={styles.currentHeader}>

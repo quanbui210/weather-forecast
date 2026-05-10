@@ -15,7 +15,13 @@ type LocationSearchProps = {
 
 function formatResultLabel(location: GeocodingApiLocation | UserLocation): string {
   if ((location as GeocodingApiLocation).name) {
-    return [(location as GeocodingApiLocation).name, (location as GeocodingApiLocation).admin1, (location as GeocodingApiLocation).country].filter(Boolean).join(', ')
+    return [
+      (location as GeocodingApiLocation).name,
+      (location as GeocodingApiLocation).admin1,
+      (location as GeocodingApiLocation).country,
+    ]
+      .filter(Boolean)
+      .join(', ')
   }
   return (location as UserLocation).label ?? ''
 }
@@ -28,10 +34,13 @@ function loadSearchHistory(): SearchHistoryItem[] {
   if (!raw) return []
   const parsed = JSON.parse(raw) as SearchHistoryItem[]
   return Array.isArray(parsed) ? parsed.slice(0, 5) : []
-   
 }
 
-export function LocationSearch({ selectedLocation, onSelectLocation, onClearSelection }: LocationSearchProps) {
+export function LocationSearch({
+  selectedLocation,
+  onSelectLocation,
+  onClearSelection,
+}: LocationSearchProps) {
   const [query, setQuery] = useState(selectedLocation ? formatResultLabel(selectedLocation) : '')
   const [isFocused, setIsFocused] = useState(false)
   const { locations, loading, error } = useLocationSearch(query)
@@ -43,7 +52,9 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
 
   function buildHistoryItem(location: GeocodingApiLocation): SearchHistoryItem {
     const label = formatResultLabel(location)
-    const key = location.id ? String(location.id) : `${location.latitude}:${location.longitude}:${location.name}`
+    const key = location.id
+      ? String(location.id)
+      : `${location.latitude}:${location.longitude}:${location.name}`
     return {
       key,
       label,
@@ -63,9 +74,9 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position)=>{
-        const {latitude,longitude} = position.coords
-        onSelectLocation({latitude:latitude,longitude:longitude, label: 'Current location'})
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords
+        onSelectLocation({ latitude: latitude, longitude: longitude, label: 'Current location' })
       })
     }
   }
@@ -132,10 +143,18 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
           autoComplete="off"
           inputMode="search"
         />
-        <button className={styles.locationButton} type="button" onClick={() => {
-          getUserLocation()
-          setQuery('')
-        }}><i><img src={locationIcon} alt="location icon" /></i></button>
+        <button
+          className={styles.locationButton}
+          type="button"
+          title="Use current location"
+          aria-label="Use current location"
+          onClick={() => {
+            getUserLocation()
+            setQuery('')
+          }}
+        >
+          <img className={styles.locationButtonIcon} src={locationIcon} alt="" aria-hidden="true" />
+        </button>
         {shouldShowHistory ? (
           <SearchHistoryList
             searchHistory={searchHistory}

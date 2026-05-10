@@ -22,11 +22,18 @@ function getResultKey(location: GeocodingApiLocation): string {
   return `${location.latitude}:${location.longitude}:${location.name}`
 }
 
-export function SearchResults({ results, isLoading, error, hasQuery, isMinLength, onSelect }: SearchResultsProps) {
+export function SearchResults({
+  results,
+  isLoading,
+  error,
+  hasQuery,
+  isMinLength,
+  onSelect,
+}: SearchResultsProps) {
   if (!hasQuery) {
     return null
   }
-  
+
   return (
     <div className={styles.dropdown} role="listbox" aria-label="Location results">
       {!isMinLength ? <p className={styles.empty}>Type at least 2 characters.</p> : null}

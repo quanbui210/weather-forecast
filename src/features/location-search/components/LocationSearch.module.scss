@@ -41,22 +41,42 @@
 }
 
 .locationButton {
-  position:absolute;
-  top: 1rem;
-  right: 0.5rem;
-  bottom: 0.5rem;
-  background-color: transparent;
-  border: none;
-  padding: 2px;
-  :hover{
-    cursor: pointer;
-  }
+  position: absolute;
+  top: 50%;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.45rem;
+  height: 2.45rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.locationButton:hover {
+  background: rgba(17, 24, 39, 0.06);
+}
+
+.locationButton:focus-visible {
+  outline: none;
+  background: rgba(17, 24, 39, 0.08);
+  border-color: rgba(17, 24, 39, 0.14);
+  box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08);
+}
+
+.locationButtonIcon {
+  width: 1.15rem;
+  height: 1.15rem;
+  opacity: 0.82;
 }
 
 .input {
   width: 100%;
   min-height: 3.35rem;
-  padding: 0.95rem 1.1rem;
+  padding: 0.95rem 3.75rem 0.95rem 1.1rem;
   border: 1px solid rgba(17, 24, 39, 0.1);
   border-radius: 1.15rem;
   background: rgba(255, 255, 255, 0.86);
@@ -64,7 +84,9 @@
   font-family: var(--font-body);
   font-size: 0.98rem;
   outline: none;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .input:focus {
@@ -178,7 +200,9 @@
   height: 1rem;
   opacity: 0.7;
   filter: grayscale(1) brightness(0.35);
-  transition: filter 140ms ease, opacity 140ms ease;
+  transition:
+    filter 140ms ease,
+    opacity 140ms ease;
 }
 
 .historyRemoveButton:hover .trashIcon {
@@ -223,5 +247,11 @@
   .input {
     min-height: 3.1rem;
     font-size: 0.95rem;
+  }
+
+  .locationButton {
+    right: 0.5rem;
+    width: 2.3rem;
+    height: 2.3rem;
   }
 }
