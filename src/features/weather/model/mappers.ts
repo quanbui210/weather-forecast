@@ -58,7 +58,6 @@ export function mapHourlyForecast(response: ForecastApiResponse): HourlyForecast
 }
 
 export function mapForecast(response: ForecastApiResponse): ForecastViewModel {
-  console.log(mapCurrentWeather(response), mapDailyForecast(response), mapHourlyForecast(response));
   return {
     timezone: response.timezone,
     current: mapCurrentWeather(response),

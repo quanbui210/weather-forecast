@@ -46,7 +46,6 @@ function LoadingView() {
 export function WeatherView({ location, onSelectLocation }: WeatherViewProps) {
   const { forecast, loading, error } = useForecast(location as GeocodingApiLocation)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
-  console.log(location)
   const locationKey =
     location && 'name' in location
       ? location.id

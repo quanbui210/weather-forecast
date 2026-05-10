@@ -11,7 +11,6 @@ type CurrentWeatherCardProps = {
 }
 
 export function CurrentWeatherCard({ weather, locationLabel, timezone }: CurrentWeatherCardProps) {
-  // console.log(weather.weatherCode)
   const visual = getWeatherVisual(weather.weatherCode, weather.isDay)
   const locationName = locationLabel ? locationLabel : "Current location"
   return (
