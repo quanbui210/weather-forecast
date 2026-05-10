@@ -20,7 +20,7 @@ function getFillWidth(value: number, min: number, max: number): string {
 }
 
 export function HourlyForecast({ items, selectedDate }: HourlyForecastProps) {
-  const rowRefs = useRef([])
+  const rowRefs = useRef<Array<HTMLElement | null>>([])
   const [visibleRows, setVisibleRows] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
