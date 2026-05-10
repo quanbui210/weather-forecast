@@ -135,7 +135,6 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
         <button className={styles.locationButton} type="button" onClick={() => {
           getUserLocation()
           setQuery('')
-          setIsFocused(true)
         }}><i><img src={locationIcon} alt="location icon" /></i></button>
         {shouldShowHistory ? (
           <SearchHistoryList
