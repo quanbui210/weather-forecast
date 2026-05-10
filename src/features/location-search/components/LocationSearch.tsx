@@ -40,7 +40,7 @@ export function LocationSearch({ selectedLocation, onSelectLocation, onClearSele
   const isMinLength = query.trim().length >= 2
   const shouldShowResults = isFocused && hasQuery
   const shouldShowHistory = isFocused && !hasQuery
-
+  console.log("[TEST] Pipeline test")
   function buildHistoryItem(location: GeocodingApiLocation): SearchHistoryItem {
     const label = formatResultLabel(location)
     const key = location.id ? String(location.id) : `${location.latitude}:${location.longitude}:${location.name}`
