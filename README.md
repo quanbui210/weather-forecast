@@ -19,40 +19,40 @@ React + TypeScript + Vite weather forecast web application, users can:
 - GitHub Actions
 - Vercel (deployment)
 
-## Folder Structure
+## Folder Structure (feature-based)
 
-```text
+```javascript
 weather-forecast/
 ├─ .github/
 │  └─ workflows/
 │     └─ ci.yml
 ├─ public/
 ├─ src/
-│  ├─ api/
+│  ├─ api/      //shared HTTP utilities
 │  │  ├─ client.ts
 │  │  └─ client.test.ts
-│  ├─ app/
+│  ├─ app/      //Top level app shell
 │  │  └─ App.tsx
 │  ├─ assets/
 │  ├─ features/
-│  │  ├─ location-search/
+│  │  ├─ location-search/  // geocoding / location search
 │  │  │  ├─ __tests__/
 │  │  │  ├─ components/
 │  │  │  ├─ hooks/
 │  │  │  ├─ api.ts
 │  │  │  └─ types.ts
-│  │  └─ weather/
+│  │  └─ weather/     // forecast feature
 │  │     ├─ __tests__/
 │  │     ├─ components/
 │  │     ├─ hooks/
 │  │     ├─ model/
 │  │     ├─ api.ts
 │  │     └─ types.ts
-│  ├─ shared/
+│  ├─ shared/    // reusable helpers / hooks / components
 │  │  ├─ components/
 │  │  ├─ hooks/
 │  │  └─ lib/
-│  ├─ tests/
+│  ├─ tests/    // test setup
 │  │  └─ setup.ts
 │  └─ main.tsx
 ├─ package.json
@@ -80,7 +80,7 @@ npm install
 npm run dev
 ```
 
-4. Open the app in your browser:
+4. Open in browser:
 
 ```text
 http://localhost:5173
