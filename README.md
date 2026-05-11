@@ -22,7 +22,7 @@ React + TypeScript + Vite weather forecast web application, users can:
 ## Folder Structure
 
 ```text
-corsearch-assignment/
+weather-forecast/
 ├─ .github/
 │  └─ workflows/
 │     └─ ci.yml
