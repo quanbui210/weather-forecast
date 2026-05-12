@@ -8,8 +8,8 @@ React + TypeScript + Vite weather forecast web application, users can:
 - view a 7-day forecast of a location
 - view hourly forecast for a selected day
 - view recent search history
-  
-*Weather code referral: https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0c*
+
+_Weather code referral: https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0c_
 
 ## Tech Stack
 
@@ -148,9 +148,3 @@ The CI pipeline runs:
 4. `npm run format:check`
 5. `npm run test:run`
 6. `npm run build`
-
-
-
-
-
-
