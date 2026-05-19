@@ -14,7 +14,6 @@ export const useLocationSearch = (query: string) => {
     if (!isSearchReady) {
       return
     }
-
     const controller = new AbortController()
 
     const search = async () => {

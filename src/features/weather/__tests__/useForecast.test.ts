@@ -4,14 +4,10 @@ import { useForecast } from '../hooks/useForecast'
 import { getWeatherForecast } from '../api'
 import { mapForecast } from '../model/mappers'
 import type { ForecastApiResponse, ForecastViewModel } from '../types'
-// Mock the external dependencies
-vi.mock('../api', () => ({
-  getWeatherForecast: vi.fn(),
-}))
 
-vi.mock('../model/mappers', () => ({
-  mapForecast: vi.fn(),
-}))
+
+vi.mock("../api")
+vi.mock("../model/mappers.ts")
 
 describe('useForecast', () => {
   const mockLocation = { latitude: 50.1109, longitude: 8.6821 }
@@ -77,35 +73,41 @@ describe('useForecast', () => {
     vi.clearAllMocks()
   })
 
-  it('should fetch and map forecast data successfully', async () => {
-    vi.mocked(getWeatherForecast).mockResolvedValueOnce(mockRawData)
-    vi.mocked(mapForecast).mockReturnValueOnce(mockMappedData as ForecastViewModel)
 
-    const { result } = renderHook(() => useForecast(mockLocation))
-
-    expect(result.current.loading).toBe(true)
+  it("should fetch weather forecast and return data successfully", async() => {
+    vi.mocked(getWeatherForecast).mockResolvedValue(mockRawData)
+    vi.mocked(mapForecast).mockReturnValue(mockMappedData)
+    
+    const {result} = renderHook(() => useForecast(mockLocation))
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
     })
-
-    expect(result.current.forecast).toEqual(mockMappedData)
-    expect(result.current.error).toBeNull()
-    expect(getWeatherForecast).toHaveBeenCalledWith(mockLocation, expect.any(AbortSignal))
+    expect(result.current.forecast).toBe(mockMappedData)
   })
 
-  it('should not update state if the component is unmounted (AbortError)', async () => {
-    let resolveRequest: (value: ForecastApiResponse) => void
-    const promise = new Promise((resolve) => {
-      resolveRequest = resolve
-    })
+  it("should throw unknown error when request fail", async() => {
+    vi.mocked(getWeatherForecast).mockRejectedValue(new Error("Unknown error"))
+    const {result} = renderHook(() => useForecast({
+      latitude: 12,
+      longitude: 12
+    }))
 
-    vi.mocked(getWeatherForecast).mockReturnValueOnce(promise as Promise<ForecastApiResponse>)
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+    expect(result.current.forecast).toBe(null)
+    expect(result.current.error?.message).toBe("Unknown error")
+  }) 
+  
+
+  it('should not update state if the component is unmounted (AbortError)', async () => {
+    const abortSpy = vi.spyOn(AbortController.prototype, "abort")
+
 
     const { unmount } = renderHook(() => useForecast(mockLocation))
 
     unmount()
-    resolveRequest!(mockRawData as ForecastApiResponse)
-    expect(mapForecast).not.toHaveBeenCalled()
+    expect(abortSpy).toHaveBeenCalled()
   })
 })

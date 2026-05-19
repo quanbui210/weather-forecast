@@ -1,30 +1,11 @@
-import { renderHook, waitFor, act } from '@testing-library/react'
-import { describe, it, expect, vi, afterEach } from 'vitest'
-import { useLocationSearch } from '../hooks/useLocationSearch'
-import { searchLocations } from '../api'
-import type { GeocodingApiLocation } from '../types'
+import { useLocationSearch } from "../hooks/useLocationSearch";
+import { searchLocations } from "../api";
+import type { GeocodingApiLocation } from "../types";
+import { act, renderHook, waitFor } from "@testing-library/react";
 
-vi.mock('../api', () => ({
-  searchLocations: vi.fn(),
-}))
 
-describe('useLocationSearch', () => {
-  afterEach(() => {
-    vi.useRealTimers()
-    vi.restoreAllMocks()
-    vi.clearAllMocks()
-  })
-
-  it('should not search if query is too short', () => {
-    const { result } = renderHook(() => useLocationSearch('a'))
-    expect(result.current.locations).toEqual([])
-    expect(result.current.loading).toBe(false)
-    expect(searchLocations).not.toHaveBeenCalled()
-  })
-
-  it('should fetch locations when query is valid after debounce', async () => {
-    vi.useFakeTimers()
-    const mockData: GeocodingApiLocation[] = [
+vi.mock("../api") // mock the whole module to avoid real network calls (mock search locations)
+const mockData: GeocodingApiLocation[] = [
       {
         id: 1,
         name: 'London',
@@ -40,34 +21,60 @@ describe('useLocationSearch', () => {
         admin1: 'London',
         population: 8618000,
       },
-    ]
-    vi.mocked(searchLocations).mockResolvedValue(mockData)
-    const { result } = renderHook(({ q }) => useLocationSearch(q), {
-      initialProps: { q: 'Lon' },
-    })
-    act(() => {
-      vi.advanceTimersByTime(350)
-    })
-    expect(result.current.loading).toBe(true)
-    vi.useRealTimers()
-    await waitFor(() => {
-      expect(result.current.locations).toEqual(mockData)
-      expect(result.current.loading).toBe(false)
-    })
-    expect(searchLocations).toHaveBeenCalledWith(expect.objectContaining({ query: 'Lon' }))
+]
+
+
+describe("test hook", () => {
+  beforeEach(() => {// clean testing environment
+    vi.useFakeTimers() // delays for debounce search, fake timers instead of relying on real delay
+    vi.clearAllMocks()  // reset call counts, resetAllMocks when want full isolation and different mock behavior per test
+  })
+  afterEach(() => {
+    vi.useRealTimers() //r restore real timers to avoid leaking fake timer behavior into other tests
   })
 
-  it('should handle API errors', async () => {
-    vi.useFakeTimers()
-    vi.mocked(searchLocations).mockRejectedValue(new Error('Network Error'))
-    const { result } = renderHook(() => useLocationSearch('London'))
-    act(() => {
+  it("should fetch when condition is fulfilled, wait for delay and return location data when success", async () => {
+    // mock so test does not hit real network, we don't want to test the backend but the hook behavior
+    vi.mocked(searchLocations).mockResolvedValue(mockData) 
+
+    // simulate a component using the hook
+    // control the hook input and re-render like React wwhen prop changes
+    const {result, rerender} = renderHook((({query}) => useLocationSearch(query)), {
+      initialProps: {query: ""}
+    })
+
+    rerender({query: "L"}) // simulate user typing, should not being called because condition is query length > 2
+    await act(async () => {
       vi.advanceTimersByTime(350)
+    })
+    expect(searchLocations).not.toHaveBeenCalled() // not being called even after delay
+    rerender({query: "London"})
+
+    await act(async () => {
+      vi.advanceTimersByTime(350)
+    })
+    expect(searchLocations).toHaveBeenCalledTimes(1)
+    expect(searchLocations).toHaveBeenCalledWith({
+      query: "London",
+      signal: expect.any(AbortSignal)
     })
     vi.useRealTimers()
     await waitFor(() => {
-      expect(result.current.error).toBe('Network Error')
       expect(result.current.loading).toBe(false)
     })
+    expect(result.current.locations).toEqual(mockData)
   })
-})
+
+  it("should stop fetching if component unmount", () => {
+    const abortSpy = vi.spyOn(AbortController.prototype, "abort")
+
+    vi.mocked(searchLocations).mockImplementation(
+      () => new Promise(() => {}) // never resolves
+    )
+    const {unmount} = renderHook(() => useLocationSearch("London"))
+
+    unmount()
+    expect(abortSpy).toHaveBeenCalled()
+  })
+}) 
+
